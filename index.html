@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Solr</title>
+    <script type="module" src="app.js"></script>
+</head>
+
+<body>
+    <h1>Passo a passo instalação Solr</h1>
+    <a href="http://ftp.unicamp.br/pub/apache/lucene/solr/8.3.0/solr-8.3.0.tgz">
+        Download solr (versão 8.3.0)
+    </a>
+    <p>
+        Descompacte o arquivo utilizando o comando:
+    </p>
+    <pre>
+        tar zxf solr-8.3.0.tgz
+    </pre>
+    <p>
+        Agora podemos entrar na pasta do solr, e para inicializa-lo a primeira vez utilizamos o seguinte comando:
+    </p>
+    <pre>
+        bin/solr start -e cloud
+    </pre>
+    <p>
+        Após isso vamos escolher algumas configurações iniciais para nosso solr.
+    </p>
+    <p>
+        Ele irá perguntar para você com quantos nós você deseja executar, caso você deseje uma quantidade diferente
+        de 2 você deve escrever e pressionar ENTER, caso contrario não precisa escrever nada e pode apenas pressionar
+        a tecla ENTER pois ele já irá criar com 2 por padrão. (Recomenda-se utlizar 2 nós.)
+    </p>
+    <p>
+        Logo em seguida ele irá perguntar em qual porta você deseja que o primeiro nó execute, assim como na escolha
+        da quantidade de nós ele também possui uma porta padrão, a 8983, caso você não possua nada rodando nela, pode
+        apertar a tecla ENTER e seguir em frente, caso contrario escreva uma porta disponível para o solr rodar esse nó
+        e siga em frente feliz. Você verá que o mesmo irá ocorrer para o segundo nó.
+    </p>
+    <p>
+        Com o solr inicializado, agora será pedido para que você criar uma coleção para a indexação de arquivos. Como o solr
+        é muito legal ele já vem com alguns arquivos padrões para realizarmos essa indexação inicial (caso você não possua nenhum
+        ou não saiba como funciona).
+    </p>
+    <p>
+        Você deve escrever o nome que você quer dar para a sua coleção, caso esteja sem ideia ou com preguiça, como o conjunto de 
+        dados que vamos anexar se chama "techproducts" você pode utilizar esse nome ou também pode simplismente apartar ENTER e 
+        ele irá criar uma coleção com o nome "gettingstarted".
+    </p>
+    <p>
+        Agora, ele irá perguntar em quantos shards você quer dividir a sua coleção, recomenda-se dividir em 2 que ele irá dividir 
+        os indices de maneira uniforme, e também vai lhe perguntar quantas replicas você gostaria de criar, recomenda-se novamente
+        seguir o padão que é 2.
+    </p>
+    <p>
+        Vamos agora, escolher o arquivo de configuração da sua coleção, como vamos usar os dados que ele disponibiliza do techproducts
+         nada mais conveniente que escolhermos o arquivo de configuração referente a ele, ent escreva como resposta:
+    </p>
+    <pre>
+        sample_techproducts_configs
+    </pre>
+    <p>
+        Com tudo criado bonitinho, o solr irá lhe dar acesso a sua interface web, que você pode acessar pelo link 
+        <a href="http://localhost:8983/solr">http://localhost:8983/solr</a>! Nele você poderá ver vários dados interessantes tanto sobre 
+        as coleções que você criou, nós, e tudo mais.
+    </p>
+    <h3>Indexando dados</h3>
+    <p>
+        Amiguinho, como já temos tudo criado e configurado, vamos inserir os dados na nossa querida coleção do solr,
+        com o seguinte comando:
+    </p>
+    <pre>
+        bin/post -c <nome-da-sua-coleção> example/exampledocs/*
+    </pre>
+    <p>
+        Esse comando irá indexar todos os arquivos contidos nessa pasta, pois o solr pode indexar vário tipo de arquivos 
+        como JSON, CNV, XML, entre outros. 
+    </p>
+    <p>
+        Com todos os arquivos indexados, podemos começar a fazer buscas em nossa bese, essas buscas podem ser feitas de duas 
+        formas, pelo app web, indo em  <code>http://localhost:8983/solr/#/nome-da-sua-coleção/query</code> quanto em GETs em na URL 
+        segundo o modelo:
+    </p>
+    <pre>
+        http://localhost:8983/solr/nome-da-sua-coleção/select?indent=on&q=*:*
+    </pre>
+</body>
+
+</html>
